@@ -20,12 +20,6 @@ void ATurret_Slower::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 }
 
-void ATurret_Slower::UpgradeTurret()
-{
-	SlowFactor += 0.25f;
-	Super::UpgradeTurret();
-}
-
 void ATurret_Slower::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,22 +31,13 @@ void ATurret_Slower::BeginPlay()
 	EnergyWeapon->GetTurret(this);
 }
 
-void ATurret_Slower::Shoot()
-{
-	if (Enemies.Num() == 0)
-	{
-		return;
-	}
-	EnergyWeapon->GetData(Enemies[0], SlowFactor);
-}
-
 void ATurret_Slower::ShootEnemy(float DeltaTime)
 {
 	if (Enemies.Num() == 0)
 	{
 		return;
 	}
-	Shoot();
+	ShootEnergy();
 }
 
 void ATurret_Slower::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

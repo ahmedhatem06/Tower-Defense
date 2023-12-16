@@ -7,9 +7,6 @@
 #include "Turret_Laser.generated.h"
 class AEnergyWeapon;
 
-/**
- * 
- */
 UCLASS()
 class TOWERDEFENSE_API ATurret_Laser : public ATurret
 {
@@ -20,12 +17,8 @@ class TOWERDEFENSE_API ATurret_Laser : public ATurret
 	virtual void BeginPlay() override;
 
 protected:
-	virtual void Shoot() override;
 	virtual void ShootEnemy(float DeltaTime) override;
-	virtual void UpgradeTurret() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Turret Properties")
 	TSubclassOf<AEnergyWeapon> EnergyWeaponObject;
-
-	AEnergyWeapon* EnergyWeapn;
 };

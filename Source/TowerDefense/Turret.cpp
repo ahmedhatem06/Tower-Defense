@@ -3,7 +3,11 @@
 
 #include "Turret.h"
 
+#include "Bullet.h"
 #include "Enemy.h"
+#include "EnergyWeapon.h"
+#include "Missile.h"
+#include "NiagaraComponent.h"
 #include "TurretDataAsset.h"
 #include "TurretPlacement.h"
 #include "Components/SphereComponent.h"
@@ -35,7 +39,6 @@ ATurret::ATurret()
 	TurretRangeStaticMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	TurretRangeStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	ATurret::ConfigureArrowComponents();
 	ATurret::ConfigureNiagaraComponents();
 }
 
@@ -45,6 +48,8 @@ void ATurret::BeginPlay()
 	Super::BeginPlay();
 
 	GetTurretData();
+
+	GetComponents<UNiagaraComponent>(NiagaraComponents);
 
 	TurretSphereComponent->SetSphereRadius(Radius);
 	const float RangeFactor = Radius / 50.f;
@@ -83,8 +88,42 @@ void ATurret::ShootEnemy(const float DeltaTime)
 {
 }
 
-void ATurret::Shoot()
+void ATurret::ShootAmmo(const TSubclassOf<AActor> Projectile)
 {
+	const FRotator Rotation(0.0f, 0.0f, 0.0f);
+
+	//Skipping the first 3 as they are bones, not sockets.
+	for (int32 i = 0; i < SocketNames.Num(); ++i)
+	{
+		FVector SocketPosition = TurretSkeletalMeshComponent->GetSocketLocation(SocketNames[i]);
+		if (AActor* SpawnedProjectile = GetWorld()->SpawnActor<AActor>(Projectile, SocketPosition,
+		                                                               Rotation))
+		{
+			if (SpawnedProjectile->IsA(ABullet::StaticClass()))
+			{
+				ABullet* SpawnedBullet = Cast<ABullet>(SpawnedProjectile);
+				SpawnedBullet->GetData(Enemies[0], Damage);
+				// The spawned actor is either an instance of ABullet or AMissile
+				// Perform specific actions for ABullet or AMissile
+			}
+			else if (SpawnedProjectile->IsA(AMissile::StaticClass()))
+			{
+				AMissile* SpawnedMissile = Cast<AMissile>(SpawnedProjectile);
+				SpawnedMissile->GetData(Enemies[0], Damage);
+			}
+			NiagaraComponents[i]->Activate();
+		}
+	}
+
+	FTimerHandle NiagaraDeactivationTimerHandle;
+	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
+	TimerManager.SetTimer(NiagaraDeactivationTimerHandle, this, &ATurret::DeactivateNiagaraComponent, 0.1f,
+	                      false);
+}
+
+void ATurret::ShootEnergy()
+{
+	EnergyWeapon->GetData(Enemies[0], Damage);
 }
 
 void ATurret::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -125,6 +164,7 @@ void ATurret::Initialize(ATurretTile* TT)
 void ATurret::GetTurretData()
 {
 	Damage = TurretDataAsset->GetDamage();
+	UpgradeDamage = TurretDataAsset->GetUpgradeDamage();
 	Radius = TurretDataAsset->GetRadius();
 	FireRate = TurretDataAsset->GetFireRate();
 	RotationSpeed = TurretDataAsset->GetRotationSpeed();
@@ -136,8 +176,10 @@ void ATurret::GetTurretData()
 
 void ATurret::OnTurretClicked(UPrimitiveComponent* pComponent, FKey inKey)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("1"));
 	if (IsTurretPlaced && !TurretPlacement->IsPlacingTurret())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("2"));
 		TurretPlacement->StartTurretSelection(this, false);
 	}
 }
@@ -164,6 +206,7 @@ int ATurret::GetSellPrice()
 
 void ATurret::UpgradeTurret()
 {
+	Damage += UpgradeDamage;
 	RankLevel++;
 	TurretPlacement->StartTurretSelection(this, true);
 }
@@ -203,15 +246,19 @@ ATurretTile* ATurret::GetTurretTile() const
 	return TurretTile;
 }
 
-void ATurret::ConfigureArrowComponents()
-{
-}
-
 void ATurret::ConfigureNiagaraComponents()
 {
 }
 
 void ATurret::DeactivateNiagaraComponent()
+{
+	for (int i = 0; i < NiagaraComponents.Num(); i++)
+	{
+		NiagaraComponents[i]->Deactivate();
+	}
+}
+
+void ATurret::ConfigureSockets()
 {
 }
 

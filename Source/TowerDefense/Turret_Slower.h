@@ -16,17 +16,10 @@ class TOWERDEFENSE_API ATurret_Slower : public ATurret
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 protected:
-	virtual void UpgradeTurret() override;
-	virtual void Shoot() override;
 	virtual void ShootEnemy(float DeltaTime) override;
 	virtual void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                          int32 OtherBodyIndex) override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Turret Properties", meta=(AllowPrivateAccess="true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Turret Properties")
 	TSubclassOf<AEnergyWeapon> EnergyWeaponObject;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Turret Properties", meta=(AllowPrivateAccess="true"))
-	float SlowFactor;
-
-	AEnergyWeapon* EnergyWeapon;
 };
