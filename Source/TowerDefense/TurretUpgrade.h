@@ -9,6 +9,8 @@
 #include "Components/TextBlock.h"
 #include "TurretUpgrade.generated.h"
 
+class UButton;
+class UCanvasPanel;
 /**
  * 
  */
@@ -19,16 +21,15 @@ class TOWERDEFENSE_API UTurretUpgrade : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
-	// class UHorizontalBox* UpgradeBox;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
-	class UCanvasPanel* ButtonContainer;
+	UCanvasPanel* ButtonContainer;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
-	class UButton* UpgradeButton;
+	UButton* UpgradeButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
-	class UButton* SellButton;
+	UButton* SellButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
-	class UButton* CloseButton;
+	UButton* CloseButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
 	UTextBlock* Text_Upgrade;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(BindWidget))
@@ -62,5 +63,7 @@ private:
 	void DisplayRankLevel(const int RankLevel) const;
 	void DisplayTurretType(EEnemyType TurretType) const;
 	void DisplayTurretProperties(const int Damage, const int FireRate, const int Range) const;
+
+	UPROPERTY()
 	ATurretPlacement* TurretPlacement;
 };

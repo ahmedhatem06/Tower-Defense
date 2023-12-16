@@ -10,6 +10,7 @@
 #include "Components/WidgetComponent.h"
 #include "HealthWidget.h"
 #include "MyHUD.h"
+#include "TowerBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
 AEnemy::AEnemy()
@@ -51,7 +52,7 @@ EEnemyType AEnemy::GetEnemyType() const
 	return EnemyTpe;
 }
 
-void AEnemy::TakeDamage(const float Val)
+void AEnemy::ReceiveDamage(const float Val)
 {
 	Health -= Val;
 

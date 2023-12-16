@@ -29,6 +29,7 @@ public:
 	void GetTurret(ATurret* T);
 
 protected:
+	UPROPERTY()
 	AEnemy* EnemyCharacter;
 
 	float BeamLength = 0.f;
@@ -39,6 +40,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* SceneComponent;
 
+	UPROPERTY()
 	ATurret* LaserTurret;
 
 	void SetBeamLength(float Length) const;

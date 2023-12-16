@@ -7,7 +7,7 @@
 
 void AEnergyWeapon_Laser::DamageEnemy()
 {
-	EnemyCharacter->TakeDamage(Damage);
+	EnemyCharacter->ReceiveDamage(Damage);
 }
 
 void AEnergyWeapon_Laser::GetData(AEnemy* Enemy, const float TurretPerk)

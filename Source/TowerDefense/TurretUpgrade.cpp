@@ -3,9 +3,11 @@
 
 #include "TurretUpgrade.h"
 
+#include "Enemy.h"
 #include "TurretPlacement.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 

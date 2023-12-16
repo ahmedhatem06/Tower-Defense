@@ -121,6 +121,7 @@ private:
 
 	UPROPERTY()
 	ATurretPlacement* TurretPlacement;
+	
 	UPROPERTY()
 	ATurretTile* TurretTile;
 };
