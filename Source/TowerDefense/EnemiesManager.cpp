@@ -3,6 +3,7 @@
 
 #include "EnemiesManager.h"
 
+#include "Enemy.h"
 #include "MyHUD.h"
 
 

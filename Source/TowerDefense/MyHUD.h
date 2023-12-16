@@ -12,6 +12,7 @@
 #include "GameFramework/HUD.h"
 #include "MyHUD.generated.h"
 
+class UTurretUpgrade;
 /**
  * 
  */
@@ -55,8 +56,15 @@ public:
 	void GameOver() const;
 
 private:
+	UPROPERTY()
 	UTurretsWidget* TurretsWidget;
-	class UTurretUpgrade* UpgradeWidget;
+
+	UPROPERTY()
+	UTurretUpgrade* UpgradeWidget;
+
+	UPROPERTY()
 	UDataWidget* DataWidget;
+
+	UPROPERTY()
 	UPauseMenu* PauseMenuWidget;
 };

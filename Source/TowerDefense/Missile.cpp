@@ -4,6 +4,7 @@
 #include "Missile.h"
 
 #include "Enemy.h"
+#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -72,7 +73,7 @@ void AMissile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 	if (OtherActor->IsA<AEnemy>())
 	{
 		AEnemy* CurrentEnemyCharacter = Cast<AEnemy>(OtherActor);
-		CurrentEnemyCharacter->TakeDamage(Damage);
+		CurrentEnemyCharacter->ReceiveDamage(Damage);
 		Destroy();
 	}
 }

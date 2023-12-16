@@ -8,6 +8,7 @@
 
 class UEnemyDataAsset;
 class UWidgetComponent;
+class UArrowComponent;
 
 UENUM(BlueprintType)
 enum class EEnemyType
@@ -30,7 +31,7 @@ public:
 	float GetMaxHealth() const;
 	void SetMaxHealth(float Val);
 	EEnemyType GetEnemyType() const;
-	void TakeDamage(float Val);
+	void ReceiveDamage(float Val);
 	void CheckHealth();
 
 	bool IsDead() const;

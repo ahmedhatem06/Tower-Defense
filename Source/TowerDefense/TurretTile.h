@@ -46,6 +46,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Tile Materials")
 	UMaterial* BlueMaterial;
 
+	UPROPERTY()
 	ATurretPlacement* TurretPlacement;
 
 	// Called when the game starts or when spawned

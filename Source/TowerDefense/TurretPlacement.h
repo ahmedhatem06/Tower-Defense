@@ -29,14 +29,23 @@ public:
 
 protected:
 	bool IsDragging = false;
+
+	UPROPERTY()
 	AActor* TempActor;
+
+	UPROPERTY()
 	ATurret* CurrentTurret;
 
 private:
 	static ATurretPlacement* Instance;
 
+	UPROPERTY()
 	AMyHUD* MyHUD;
+
+	UPROPERTY()
 	ACurrency* Currency;
+
+	UPROPERTY()
 	ATurretTile* CurrentTurretTile;
 
 public:

@@ -6,6 +6,7 @@
 #include "MyHUD.h"
 #include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 
 void UDataWidget::NativeOnInitialized()
 {
