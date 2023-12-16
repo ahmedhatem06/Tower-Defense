@@ -8,6 +8,11 @@ float UTurretDataAsset::GetDamage() const
 	return Damage;
 }
 
+float UTurretDataAsset::GetUpgradeDamage() const
+{
+	return UpgradeDamage;
+}
+
 float UTurretDataAsset::GetRadius() const
 {
 	return Radius;

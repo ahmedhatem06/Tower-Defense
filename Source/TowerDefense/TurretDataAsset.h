@@ -27,6 +27,9 @@ protected:
 	float Damage;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Turret Properties", meta=(AllowPrivateAccess="true"))
+	float UpgradeDamage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Turret Properties", meta=(AllowPrivateAccess="true"))
 	float RotationSpeed = 4.f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Turret Properties", meta=(AllowPrivateAccess="true"))
@@ -52,6 +55,7 @@ protected:
 
 public:
 	float GetDamage() const;
+	float GetUpgradeDamage() const;
 	float GetRadius() const;
 	float GetFireRate() const;
 	float GetRotationSpeed() const;

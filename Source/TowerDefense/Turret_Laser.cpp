@@ -13,9 +13,9 @@ void ATurret_Laser::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
-	if (EnergyWeapn)
+	if (EnergyWeapon)
 	{
-		EnergyWeapn->Destroy();
+		EnergyWeapon->Destroy();
 	}
 }
 
@@ -24,19 +24,10 @@ void ATurret_Laser::BeginPlay()
 	Super::BeginPlay();
 	const FRotator Rotation(0.0f, 0.0f, 0.0f);
 
-	EnergyWeapn = GetWorld()->SpawnActor<AEnergyWeapon>(EnergyWeaponObject, GetActorLocation(),
-	                                                    Rotation);
-	EnergyWeapn->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	EnergyWeapn->GetTurret(this);
-}
-
-void ATurret_Laser::Shoot()
-{
-	if (Enemies.Num() == 0)
-	{
-		return;
-	}
-	EnergyWeapn->GetData(Enemies[0], Damage);
+	EnergyWeapon = GetWorld()->SpawnActor<AEnergyWeapon>(EnergyWeaponObject, GetActorLocation(),
+	                                                     Rotation);
+	EnergyWeapon->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	EnergyWeapon->GetTurret(this);
 }
 
 void ATurret_Laser::ShootEnemy(float DeltaTime)
@@ -45,11 +36,5 @@ void ATurret_Laser::ShootEnemy(float DeltaTime)
 	{
 		return;
 	}
-	Shoot();
-}
-
-void ATurret_Laser::UpgradeTurret()
-{
-	Damage += 0.25f;
-	Super::UpgradeTurret();
+	ShootEnergy();
 }

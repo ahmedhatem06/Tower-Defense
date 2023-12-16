@@ -5,27 +5,10 @@
 
 #include "Bullet.h"
 #include "NiagaraComponent.h"
-#include "Components/ArrowComponent.h"
 
 ATurret_Quadruple::ATurret_Quadruple()
 {
-	ATurret_Quadruple::ConfigureArrowComponents();
 	ATurret_Quadruple::ConfigureNiagaraComponents();
-}
-
-void ATurret_Quadruple::ConfigureArrowComponents()
-{
-	TurretArrowComponentUpRight = CreateDefaultSubobject<UArrowComponent>(TEXT("TurretArrowComponentUpRight"));
-	TurretArrowComponentUpRight->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-	TurretArrowComponentDownRight = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponentDownRight"));
-	TurretArrowComponentDownRight->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-	TurretArrowComponentUpLeft = CreateDefaultSubobject<UArrowComponent>(TEXT("TurretArrowComponentUpLeft"));
-	TurretArrowComponentUpLeft->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-	TurretArrowComponentDownLeft = CreateDefaultSubobject<UArrowComponent>(TEXT("TurretArrowComponentDownLeft"));
-	TurretArrowComponentDownLeft->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ATurret_Quadruple::ConfigureNiagaraComponents()
@@ -47,37 +30,9 @@ void ATurret_Quadruple::ConfigureNiagaraComponents()
 	NiagaraComponentDownLeft->SetAutoActivate(false);
 }
 
-void ATurret_Quadruple::UpgradeTurret()
+void ATurret_Quadruple::ShootAmmo(const TSubclassOf<AActor> Projectile)
 {
-	Damage += 2.5f;
-	Super::UpgradeTurret();
-}
-
-void ATurret_Quadruple::BeginPlay()
-{
-	Super::BeginPlay();
-
-	GetComponents<UArrowComponent>(ArrowComponents);
-	GetComponents<UNiagaraComponent>(NiagaraComponents);
-}
-
-void ATurret_Quadruple::Shoot()
-{
-	const FRotator Rotation(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < ArrowComponents.Num(); i++)
-	{
-		if (ABullet* TempBullet = GetWorld()->SpawnActor<ABullet>(Bullet, ArrowComponents[i]->GetComponentLocation(),
-		                                                          Rotation))
-		{
-			TempBullet->GetData(Enemies[0], Damage);
-			NiagaraComponents[i]->Activate();
-		}
-	}
-
-	FTimerHandle NiagaraDeactivationTimerHandle;
-	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
-	TimerManager.SetTimer(NiagaraDeactivationTimerHandle, this, &ATurret_Quadruple::DeactivateNiagaraComponent, 0.1f,
-	                      false);
+	Super::ShootAmmo(Projectile);
 }
 
 void ATurret_Quadruple::ShootEnemy(float DeltaTime)
@@ -89,16 +44,8 @@ void ATurret_Quadruple::ShootEnemy(float DeltaTime)
 
 	if (FireCountdown <= 0.f)
 	{
-		Shoot();
+		ShootAmmo(Bullet);
 		FireCountdown = 1.f / FireRate;
 	}
 	FireCountdown -= DeltaTime;
-}
-
-void ATurret_Quadruple::DeactivateNiagaraComponent()
-{
-	for (int i = 0; i < NiagaraComponents.Num(); i++)
-	{
-		NiagaraComponents[i]->Deactivate();
-	}
 }
